@@ -21,20 +21,243 @@
 
 class: center, middle
 
-# Title
+# Elixir 
 
 ---
 
-# Agenda
+# History
 
-1. Introduction
-2. Deep-dive
-3. ...
+![Seven Languages in Seven Weeks](http://ecx.images-amazon.com/images/I/5109xeEqMZL._SL500_SS500_.jpg)
 
 ---
 
-# Introduction
+# Elixir
 
+## - Functional
+## - Concurrent
+## - Distributed
+## - Fault tolerant 
+
+---
+
+# Elixir Basic Types
+
+```elixir
+iex> 1          # integer
+iex> 0x1F       # integer
+iex> 1.0        # float
+iex> true       # boolean
+iex> :atom      # atom / symbol
+iex> "elixir"   # string
+iex> [1, 2, 3]  # list
+iex> {1, 2, 3}  # tuple
+```
+
+---
+
+# Arithmetic
+
+```elixir
+1+2
+
+3*5
+
+10/2
+
+div(10,2)
+
+rem(10,3)
+```
+
+---
+
+# is_type functions
+
+```elixir
+iex> is_boolean(true)
+true
+
+iex> is_boolean([])
+false
+
+iex> is_tuple({})
+true
+
+iex> is_list([1,2])
+true
+
+```
+
+---
+
+# Atoms
+
+Atoms are constants with the name as their value.
+
+```elixir
+
+iex> :eoin
+:eoin
+``` 
+
+Elixir makes use of atoms for many language features.
+
+```elixir
+iex> :true
+true
+
+iex> :true == true
+true
+
+iex> is_atom true
+true
+```
+
+---
+
+
+```elixir
+# Hello World
+
+```elixir
+s = "Hello World"
+IO.puts(s)
+```
+
+---
+# Pattern Matching
+
+```elixir
+x = 1
+```
+
+```elixir
+x = 2
+```
+
+```elixir
+^x = 2
+```
+
+## Pattern Matching - Destructuring
+```elixir
+{ x, y } = { 5, 6 }
+
+{ a, b, c } = { x, y, 7 }
+```
+
+---
+# Pattern Matching - Lists
+```elixir
+
+[ a, b, c, d ] = [ 1, 2, 3, 4 ] 
+
+[ head | tail ] = [ a, b, c, d ]
+
+iex> head
+1
+iex> tail
+[ 2,3,4 ]
+```
+---
+
+# Pattern Matching in Functions
+
+```elixir
+sayhi = fn 
+	'eoin' -> IO.puts "Hi, me!"
+	name -> IO.puts "Hi, #{name}!"
+end
+```
+
+```elixir
+sayhi.('eoin')
+
+sayhi.('john')
+```
+---
+# Functional Programming
+
+Taken from [Dave Thomas' Elixir Talk](https://www.youtube.com/watch?v=SVisr_gYA1w)
+
+## Fibonacci
+
+```
+ fib(0) →  0
+
+ fib(1) →  0
+
+ fib(n) →  fib(n-1) + fib(r-1)
+```
+---
+
+# Fibonacci - Elixir Module
+
+```elixir
+
+defmodule Fib do
+	
+	def fib(0), do: 0
+	def fib(1), do: 1
+	def fib(n), do: fib(n-1) + fib(n-2)
+
+end
+
+Fib.fib(32)
+
+``` 
+---
+
+# Alternately...
+
+```elixir
+defmodule Fib do
+	def fib(n) do
+		case n do
+			0 -> 0
+			1 -> 1
+			n -> fib(n-1) + fib(n-2)
+		end
+	end
+end
+```
+
+---
+# Run Length Encoding
+
+### Encode this:
+
+```elixir
+[ 1, 2, 2, 2, 3, 4, 5, 5, 5, 5, 5, 6, 6 ]
+
+```
+
+### to this:
+```elixir
+[ 1, {2,3}, 3, 4, {5,5}, {6,2} ]
+```
+---
+# RLE Implementation 
+
+```elixir
+defmodule RLE do 
+	def encode(list), do: _encode(list, [])
+
+	defp _encode([], result), do: Enum.reverse(result)
+	
+	defp _encode([ a, a | tail ], result) do
+		_encode([ {a, 2} | tail ], result)
+	end
+
+	defp _encode([ {a, n}, a | tail ], result) do
+		_encode([ {a, n+1} | tail ], result)
+	end
+
+	defp _encode([ a | tail ], result ) do
+		_encode(tail, [ a | result ])	
+	end
+end
+```
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
