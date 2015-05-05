@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>Elixir - Digisoft Tech Talk</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -115,8 +115,38 @@ true
 
 ---
 
+# Strings
+
+UTF-8 Strings use double quotes
 
 ```elixir
+iex> "hi"
+"hi"
+
+# Concatenation
+iex> "hi" <> " there"
+
+# Interpolation
+iex> "hi #{name}"
+
+```
+
+Strings are actually binary types
+
+```elixir
+iex> s = "eóin"
+
+iex> is_binary s
+true
+
+iex> String.length s
+4
+
+iex> byte_size s
+5
+```
+---
+
 # Hello World
 
 ```elixir
@@ -124,6 +154,10 @@ s = "Hello World"
 IO.puts(s)
 ```
 
+---
+# = is not assignment
+
+## = is the *match operator*
 ---
 # Pattern Matching
 
@@ -144,10 +178,21 @@ x = 2
 { x, y } = { 5, 6 }
 
 { a, b, c } = { x, y, 7 }
+
+{ i, j, k } = {:eoin, "is", 'here'}
 ```
 
 ---
 # Pattern Matching - Lists
+
+- Lists are linked lists
+- Adding to the head is cheap
+
+```elixir
+iex> [1] ++ [2,3,4]
+[ 1,2,3,4 ]
+```
+
 ```elixir
 
 [ a, b, c, d ] = [ 1, 2, 3, 4 ] 
@@ -159,6 +204,24 @@ iex> head
 iex> tail
 [ 2,3,4 ]
 ```
+---
+# Immutability
+
+## Variables cannot be changed
+## But variables can be rebound
+
+```elixir
+
+iex> x = 1
+1
+
+iex> x = 2
+2
+
+iex> ^x = 3
+** (MatchError) no match of right hand side value: 3
+```
+
 ---
 
 # Pattern Matching in Functions
@@ -258,6 +321,40 @@ defmodule RLE do
 	end
 end
 ```
+
+---
+
+# Control Flow
+
+---
+
+# `cond`
+
+
+```elixir
+a = 10
+cond do
+	rem a, 2 == 0 -> "Even"
+	rem a, 2 == 1 -> "Odd"
+	true -&gt; to_string a
+end
+```
+
+--- 
+# `case` 
+
+```elixir
+case n do
+	"hello" -> IO.puts "Hello!!!"
+	x when is_number(x) -> IO.puts "Number"
+	{1, 2, x} when x >= 3 -> IO.puts "Tuple of ordered integers"
+	_ -> "Something else"
+end
+```
+
+- Guard clauses
+
+---
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
