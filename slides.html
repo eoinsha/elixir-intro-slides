@@ -330,17 +330,30 @@ end
 
 # `cond`
 
-
 ```elixir
 a = 10
 cond do
 	rem a, 2 == 0 -> "Even"
 	rem a, 2 == 1 -> "Odd"
-	true -&gt; to_string a
+	true -> to_string a
 end
 ```
 
---- 
+# `if` and `unless`
+
+```elixir
+if true do
+	"True"
+end
+```
+
+```elixir
+unless false do
+	"True"
+end
+
+---
+
 # `case` 
 
 ```elixir
