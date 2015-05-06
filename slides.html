@@ -351,6 +351,7 @@ end
 unless false do
 	"True"
 end
+```
 
 ---
 
@@ -368,6 +369,143 @@ end
 - Guard clauses
 
 ---
+
+# Keyword Lists
+
+- Associative array
+- Represented by a list of tuples
+- The first element in each tuple is an atom
+- Keys are ordered (it *is* a list)
+- Duplicate keys are permitted
+
+```elixir
+iex> kl = [{:a,2},{:b,3}]
+[a: 2, b: 3]
+
+iex> kl[:a]
+2
+```
+
+---
+
+# Maps
+- Used for larger data sets
+- Duplicate keys are not stored (overwrite on insert)
+- Unordered
+- Any type as a key
+- Suitable for pattern matching
+
+```elixir
+m = %{:x => 1, 'y' => 3, "z"=> 4}
+```
+
+```elixir
+iex> %{'y' => c} = m
+...
+iex> y
+3
+```
+
+```elixir
+# Access by key
+iex> m.x
+1
+```
+
+```elixir
+# Update by key
+iex> %{m | :x => 8}
+
+```
+---
+
+# Structs
+
+- Based on maps
+
+```elixir
+defmodule Person do
+	defstruct name: "Undefined", address: "", age: 1
+end
+```
+
+```elixir
+p = %Person{name: "Eoin", address: "Cork", age: 35}
+```
+
+<!--- TODO - More on maps and structs -->
+---
+
+# Polymorphism
+
+Implemented using *Protocols*
+
+```elixir
+defprotocol Stringify do
+	def str(v)
+end
+
+defimpl Stringify, for: Integer do
+	def str(v), do: to_string(v)
+end
+
+defimpl Stringify, for: Person do
+	def str(v), do: "Name: #{v.name}, Age: #{v.age}"
+end
+```
+
+```elixir
+iex> Stringify.str 1
+"1"
+iex> Stringify.str p
+"Name: Eoin, Age: 35"
+```
+
+---
+
+# Nested functions
+
+```elixir
+is_admin(get_user(name))
+```
+
+# Pipe forward
+```elixir
+name |> get_user |> is_admin
+```
+
+---
+
+# Enumerables
+
+Lists and maps are enumerables
+
+```elixir
+Enum.map([1,2,3,4,5], fn x -> x + 1 end)
+
+Enum.map(1..100, fn x-> x * 2 end)
+```
+
+The `Enum` module provides lots of functions for dealing with enumerables
+
+```elixir
+Enum.reduce(1..10, 0, fn x, acc -> x + acc end)
+
+Enum.take_every(1..50, 2)
+
+Enum.chunk(50..100, 10)
+```
+
+---
+# Enumerables, `|>` and Streams
+
+```elixir
+1..1_000_000 |> Enum.filter(fn(x) -> rem(x,10) == 0 end) |> Enum.count
+```
+
+```elixir
+1..1_000_000 |> Stream.filter(fn(x) -> rem(x,10) ==0 end) |> Enum.count
+```
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
