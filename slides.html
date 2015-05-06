@@ -173,7 +173,8 @@ x = 2
 ^x = 2
 ```
 
-## Pattern Matching - Destructuring
+---
+# Pattern Matching - Destructuring
 ```elixir
 { x, y } = { 5, 6 }
 
@@ -672,9 +673,117 @@ mix compile
 mix test
 ```
 
+
+## `lib/myapp.ex`
+```elixir
+defmodule MyApp do
+end
+```
+---
+
+# 
+# Tests
+
+## ExUnit
+
+```elixir
+defmodule MyAppTest do
+  use ExUnit.Case
+
+  test "the truth" do
+    assert 1 + 1 == 2
+  end
+end
+```
+
+---
+
+# OTP
+
+- Large library for concurrency and distribution
+- *Supervisor*
+- *GenServer*
+- *GenEvent*
+- *gen_fsm*
+
+The library provides standard and convenient ways of implementing distributed, concurrent applications.
+
+- Also provides support for *hot code swapping*
+
+---
+
+# Macros
+
+```
+defmodule Unless do
+  def fun_unless(clause, expression) do
+    if(!clause, do: expression)
+  end
+
+  defmacro macro_unless(clause, expression) do
+    quote do
+      if(!unquote(clause), do: unquote(expression))
+    end
+  end
+end
+```
+
+---
+
+# Elixir Ecosystem
+
+- Mix
+- Hex
+- Ecto
+- Phoenix
+
+---
+
+# Start with Phoenix
+
+```bash
+mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v0.12.0/phoenix_new-0.12.0.ez
+```
+
+```bash
+mix phoenix.new digi_blog
+git init
+npm install
+mix phoenix.server
+```
+
+```bash
+mix phoenix.gen.html Blog blogs title:string body:string 
+```
+
+```bash
+mix ecto.create
+mix ecto.migrate
+```
+---
+# Ecto
+
+```elixir
+
+defmodule Sample.App do
+  import Ecto.Query
+  alias Sample.Weather
+  alias Sample.Repo
+
+  def sample_query do
+    query = from w in Weather,
+          where: w.prcp > 0 or is_nil(w.prcp),
+         select: w
+    Repo.all(query)
+  end
+end
+```
+---
 # Thanks
 
 Slides at https://eoinsha.github.io/elixir-intro-slides/slides.html
+
+
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
     </script>
