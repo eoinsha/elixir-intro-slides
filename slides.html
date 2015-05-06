@@ -508,6 +508,36 @@ Enum.chunk(50..100, 10)
 ```
 
 ---
+# Processes
+
+- Processes are used for executing all Elixir code
+- Follows the Actor model
+- Processes are isolated and communicate via message passing
+
+Start with `spawn`
+```elixir
+pid = spawn fn -> 2*2 end
+```
+
+Let's send `self` a message.
+
+```elixir
+send self(), {:say, "hello"}
+
+receive do 
+{:say, sentence} -> sentence
+end
+```
+---
+
+```elixir
+me = self()
+spawn fn -> send(me, {:ping, self()}) end
+
+receive do
+	{:ping, pid} -> "Got a PING from #{inspect.pid}"
+end
+```
 # Thanks
 
 Slides at https://eoinsha.github.io/elixir-intro-slides/slides.html
