@@ -507,7 +507,27 @@ Enum.chunk(50..100, 10)
 ```elixir
 1..1_000_000 |> Stream.filter(fn(x) -> rem(x,10) ==0 end) |> Enum.count
 ```
+---
+# Comprehensions
 
+Syntactic sugar for iterating over Enumerables
+
+Three parts:
+- Generators
+- Filters
+- Collectables
+
+```elixir
+for n <- 1..10 do n*n
+```
+
+```elixir
+for n <- [1,3,4,7,8], rem(n,2) == 0, do: IO.puts n
+```
+
+```elixir
+for n <- 1..10, rem(n,2) == 1, into: %{}, do: {to_string(n), n}
+```
 ---
 # Processes
 
@@ -531,7 +551,7 @@ end
 ```
 ---
 
-# Spawning a Proces
+# Spawning a Process
 
 ```elixir
 me = self()
@@ -715,15 +735,9 @@ The library provides standard and convenient ways of implementing distributed, c
 # Macros
 
 ```
-defmodule Unless do
-  def fun_unless(clause, expression) do
-    if(!clause, do: expression)
-  end
-
-  defmacro macro_unless(clause, expression) do
-    quote do
-      if(!unquote(clause), do: unquote(expression))
-    end
+defmacro unless(clause, options) do
+  quote do
+    if(!unquote(clause), do: unquote(options))
   end
 end
 ```
@@ -732,17 +746,18 @@ end
 
 # Elixir Ecosystem
 
-- Mix
-- Hex
-- Ecto
-- Phoenix
+## Mix - Build tool
+## Hex - Package Manager
+## Ecto - Persistence
+## Phoenix - Web Framework
 
 ---
 
 # Start with Phoenix
 
 ```bash
-mix archive.install https://github.com/phoenixframework/phoenix/releases/download/v0.12.0/phoenix_new-0.12.0.ez
+mix archive.install \
+ https://github.com/phoenixframework/phoenix/releases/download/v0.12.0/phoenix_new-0.12.0.ez
 ```
 
 ```bash
@@ -781,7 +796,17 @@ end
 ---
 # Thanks
 
-Slides at https://eoinsha.github.io/elixir-intro-slides/slides.html
+- http://elixir-lang.org/
+- https://pragprog.com/book/elixir/programming-elixir
+- http://www.phoenixframework.org/
+
+- https://github.com/h4cc/awesome-elixir 
+
+- https://hex.pm/
+
+- \#elixirlang
+
+- Slides at https://eoinsha.github.io/elixir-intro-slides/slides.html
 
 
     </textarea>
