@@ -530,6 +530,8 @@ end
 ```
 ---
 
+# Spawning a Proces
+
 ```elixir
 me = self()
 spawn fn -> send(me, {:ping, self()}) end
@@ -537,7 +539,139 @@ spawn fn -> send(me, {:ping, self()}) end
 receive do
 	{:ping, pid} -> "Got a PING from #{inspect.pid}"
 end
+
 ```
+
+---
+# Fault Tolerance
+
+```elixir
+spawn_link fn -> raise "Oh No!" end
+
+receive do
+	:msg -> "This won't happen"
+end
+```
+
+- Processes can also be linked with `Process.link/1`
+- Normally, you don't catch exceptions
+- The rule is *fail fast*
+---
+
+# Tasks
+
+- Task module makes it easier to start processes
+- Provides better error reporting
+- Returns a tuple instead of a `Pid`
+
+```elixir
+Task.start fn -> raise "Oh No!" end
+```
+---
+
+# State
+
+- Immutability means that *state* is not maintained in fields/members/attributes
+
+```elixir
+defmodule StateHolder do
+    def start_link do
+        Task.start_link(fn -> iterate(%{}) end)
+    end
+    defp iterate(state_map) do
+        receive do
+            {:get, key, requestPid} ->
+                send requestPid, Map.get(state_map, key)
+                iterate(state_map)
+            {:set, key, value} ->
+                iterate(Map.put(state_map, key, value))
+        end    
+    end
+end
+```
+
+```elixir
+{:ok, pid} = StateHolder.start_link
+
+send pid, {:set, :name, "Eoin"}
+
+send pid, {:get, :name, self()}
+
+```
+---
+
+# Agents
+
+Elixir provides `Agent` as a module to wrap processes with state
+
+```elixir
+{:ok, pid} = Agent.start_link( fn -> %{} end )
+
+Agent.update(pid, fn map -> Map.put(map, :name, "Eoin") end)
+
+Agent.get(pid, fn map -> Map.get(map, :name) end)
+
+```
+---
+# Processes and IO
+
+```elixir
+{:ok, pid} = StringIO.open("This is a string")
+IO.read(pid, 4)
+```
+
+```elixir
+{:ok, file} = File.open "/tmp/hello", [:write]
+
+IO.write(file, "This is a test\n")
+```
+
+```elixir
+IO.inspect self
+
+IO.puts :stdio, "Self: #{inspect self}"
+```
+
+---
+
+# Inline Documentation
+
+```elixir
+defmodule Person do
+	@moduledoc """
+	Represents a person with a name and stuff
+	"""
+	defstruct name: "Default Name", age: 1
+
+	@doc """
+	Returns `true` if the person is an adult
+	"""
+	def is_adult?(person) do
+		person.age >=18 
+	end	
+end
+```
+
+---
+
+# Creating and Building Applications
+
+---
+
+# Mix
+
+```bash
+mix new myapp --Module MyApp
+```
+
+```bash
+mix compile
+```
+
+```bash
+mix test
+```
+
 # Thanks
 
 Slides at https://eoinsha.github.io/elixir-intro-slides/slides.html
