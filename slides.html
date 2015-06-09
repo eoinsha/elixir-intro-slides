@@ -25,9 +25,13 @@ class: center, middle
 
 ---
 
+# Microservices!
+
+---
+
 # History
 
-![Seven Languages in Seven Weeks](http://ecx.images-amazon.com/images/I/5109xeEqMZL._SL500_SS500_.jpg)
+![Seven Languages in Seven Weeks](7lang.jpg)
 
 ---
 
@@ -37,6 +41,7 @@ class: center, middle
 ## - Concurrent
 ## - Distributed
 ## - Fault tolerant 
+## - Lovely
 
 ---
 
@@ -752,30 +757,6 @@ end
 ## Phoenix - Web Framework
 
 ---
-
-# Start with Phoenix
-
-```bash
-mix archive.install \
- https://github.com/../phoenix_new-0.13.1.ez
-```
-
-```bash
-mix phoenix.new digi_blog
-git init
-npm install
-mix phoenix.server
-```
-
-```bash
-mix phoenix.gen.html Blog blogs title:string body:string 
-```
-
-```bash
-mix ecto.create
-mix ecto.migrate
-```
----
 # Ecto
 
 ```elixir
@@ -794,6 +775,62 @@ defmodule Sample.App do
 end
 ```
 ---
+
+# Phoenix
+
+## High Productivity
+## Web UIs
+## APIs
+## Distributed
+## Channels
+
+---
+
+# Creating a Phoenix Application
+
+```bash
+mix archive.install \
+ https://github.com/../phoenix_new-0.13.1.ez
+```
+
+```bash
+mix phoenix.new blogification
+git init
+npm install
+mix phoenix.server
+```
+
+```bash
+mix phoenix.gen.html Blog blogs title:string body:string 
+```
+
+```bash
+mix ecto.create
+mix ecto.migrate
+```
+---
+
+# Concurrent Web Applications!
+
+---
+
+# Conway's Game of Life
+
+- Cellular Automation - 2D
+- A cell survives if it has exactly 2 or 3 live neighbours
+- A cell dies otherwise (isolation or starvation)
+- A cell is born if it has exactly three live neighbours
+
+---
+
+# Implement!
+
+- Each cell has its own process
+- Cells tell their neighbours their state
+- State changes are published on Phoenix Channels
+- HTML5 Canvas rendering
+
+---
 # Thanks
 
 - http://elixir-lang.org/
@@ -807,10 +844,10 @@ end
 - \#elixirlang
 
 - Slides at https://eoinsha.github.io/elixir-intro-slides/slides.html
-
+- Code at https://github.com/eoinsha/gol_ex.git
 
     </textarea>
-    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    <script src="remark-latest.min.js">
     </script>
     <script>
       var slideshow = remark.create();
